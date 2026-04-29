@@ -1,0 +1,85 @@
+═══════════════════════════════════════════════════════════
+  ROBOT TRIAGE – Projet Java  |  Guide de lancement
+═══════════════════════════════════════════════════════════
+
+STRUCTURE DES FICHIERS
+──────────────────────
+src/projetrobot/
+  ├── Robot.java                  - Classe abstraite de base
+  ├── Connectable.java            - Interface réseau
+  ├── RobotConnecte.java          - Robot avec connexion réseau
+  ├── RobotTriage.java            - Robot de triage médical (principal)
+  ├── RobotLivraison.java         - Robot de livraison
+  ├── DomainClasses.java          - Toutes les classes domaine :
+  │     SignesVitaux, DossierMedical, ResultatVision,
+  │     KitUrgence, AnalyseurUrgence, RapportKit,
+  │     NiveauESI, ElementKit, CategorieRisque
+  ├── Exceptions :
+  │     RobotException.java
+  │     EnergieInsuffisanteException.java
+  │     MaintenanceRequiseException.java
+  │     UrgenceVitaleException.java
+  │     AuthenticationException.java
+  │     KitManquantException.java
+  ├── Dashboard.java              - Interface Swing principale
+  ├── SimulationEngine.java       - Moteur des 8 scénarios
+  ├── DashboardComponents.java    - Composants graphiques custom
+  │     SalleAttentePanel         - Carte de la salle d'attente
+  │     VitalSignPanel            - Jauges signes vitaux
+  │     KitPanel                  - Stocks kit d'urgence
+  │     LogCellRenderer           - Rendu colorisé des logs
+  └── Scénarios (8 cas cliniques) :
+        Scenario1_JambeAmputee.java
+        Scenario2_HypertensionCardio.java
+        Scenario3_PatientInconscient.java
+        Scenario4_DiabetiqueFevre.java
+        Scenario5_AgeSurclassement.java
+        Scenario6_Spo2Respiratoire.java
+        Scenario7_PersonneAgeeeImmuno.java
+        Scenario8_DiabetiqueInfection.java
+        ScenarioHelper.java
+
+═══════════════════════════════════════════════════════════
+  LANCEMENT DU DASHBOARD (interface graphique complète)
+═══════════════════════════════════════════════════════════
+
+  Option A – Via le JAR exécutable :
+    java -jar RobotTriage-Dashboard.jar
+
+  Option B – Via les sources :
+    javac -encoding UTF-8 -d bin src/projetrobot/*.java
+    java -cp bin projetrobot.Dashboard
+
+═══════════════════════════════════════════════════════════
+  LANCEMENT DES SCÉNARIOS INDIVIDUELS (console texte)
+═══════════════════════════════════════════════════════════
+
+  java -cp bin projetrobot.Scenario1_JambeAmputee
+  java -cp bin projetrobot.Scenario2_HypertensionCardio
+  java -cp bin projetrobot.Scenario3_PatientInconscient
+  java -cp bin projetrobot.Scenario4_DiabetiqueFevre
+  java -cp bin projetrobot.Scenario5_AgeSurclassement
+  java -cp bin projetrobot.Scenario6_Spo2Respiratoire
+  java -cp bin projetrobot.Scenario7_PersonneAgeeeImmuno
+  java -cp bin projetrobot.Scenario8_DiabetiqueInfection
+
+═══════════════════════════════════════════════════════════
+  CODE DE SÉCURITÉ MÉDECIN
+═══════════════════════════════════════════════════════════
+
+  Pour consulter un dossier patient depuis le dashboard :
+    Code médecin : MED-2025
+
+═══════════════════════════════════════════════════════════
+  LES 8 SCÉNARIOS CLINIQUES
+═══════════════════════════════════════════════════════════
+
+  01 – Jambe amputée           → ESI 1 (Code Blue, vision YOLO Pose)
+  02 – HTA + Cardio            → ESI 2 (surclassement dossier CARDIOVASCULAIRE)
+  03 – Patient inconscient     → ESI 1 (chute détectée, EAR < 0.2)
+  04 – Diabétique + fièvre     → ESI 3 sans dossier / ESI 2 avec MÉTABOLIQUE
+  05 – Âgé immunodéprimé       → ESI 2 (surclassement âge > 75 + IMMUNODEPRIME)
+  06 – SpO2 critique           → ESI 1 (SpO2 88% + antécédent RESPIRATOIRE)
+  07 – Traumatisme crânien     → ESI 1 (saignement + agitation)
+  08 – Mode dégradé            → ESI sans dossier (cyberattaque simulée)
+
